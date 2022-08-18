@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>295647266614-fcbl1obgjp33ouep0vid7oek4thrdpq6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.295647266614-fcbl1obgjp33ouep0vid7oek4thrdpq6</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>295647266614-u8qpa4dapfq72ihfop1s2i69jn9vkomj.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDo72hmYmm_jyHgOI_2LPncjb3PHRk82_w</string>
+	<key>GCM_SENDER_ID</key>
+	<string>295647266614</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.serrature</string>
+	<key>PROJECT_ID</key>
+	<string>serrature-b7210</string>
+	<key>STORAGE_BUCKET</key>
+	<string>serrature-b7210.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:295647266614:ios:54790178144c3a71a81597</string>
+</dict>
+</plist>

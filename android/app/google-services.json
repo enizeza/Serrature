@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "295647266614",
+    "project_id": "serrature-b7210",
+    "storage_bucket": "serrature-b7210.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:295647266614:android:93f6744c4d364898a81597",
+        "android_client_info": {
+          "package_name": "com.example.serrature"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "295647266614-9851m3v3fv3ijmiv5svvl90kjr3ds8t7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzkC6ZGeeAE4oChw5ZFjHv7Q-bubdMm-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "295647266614-9851m3v3fv3ijmiv5svvl90kjr3ds8t7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "295647266614-fcbl1obgjp33ouep0vid7oek4thrdpq6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.serrature"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
