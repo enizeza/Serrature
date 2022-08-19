@@ -30,6 +30,7 @@
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:serrature/models/room_model.dart';
 
 class Booking {
   final String room_code;
@@ -43,7 +44,7 @@ class Booking {
   final total;
   final String user_uid;
 
-  const Booking({
+  Booking({
     required this.room_code,
     required this.room_name,
     required this.image_id,
@@ -97,4 +98,13 @@ class Booking {
         total: json['total'] as double,
         user_uid: json['user_uid'] as String,
       );
+
+  Crea(Booking booking) {
+    FirebaseFirestore.instance
+        .collection("booking")
+        .add(booking.toJson())
+        .then((value) {
+      print(value.id);
+    });
+  }
 }

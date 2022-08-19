@@ -39,7 +39,7 @@ dependencies:
   flutter_riverpod: any
   flutterfire_ui: ^0.4.3+5
   google_sign_in: ^5.4.1
-  intl: any
+  intl: ^0.17.0
   flutter_datetime_picker: any
 
 dev_dependencies:
