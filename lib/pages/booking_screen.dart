@@ -26,8 +26,8 @@ class _BookingScreen extends State<BookingScreen> {
   var now = DateTime.now();
   bool time = false;
   var slot_time;
-  bool available = false;
-  List<int> options = List.filled(TIME_SLOT.length, 1);
+  bool available = true;
+  //List<int> options = List.filled(TIME_SLOT.length, 1);
 
   void selected_date(DateTime data) {
     setState(() {
@@ -69,6 +69,7 @@ class _BookingScreen extends State<BookingScreen> {
           ) {
             if (snapshot.hasData) {
               final data = snapshot.data!.docs;
+              //List<int> options = List.filled(TIME_SLOT.length, 1);
               return SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 24.0),
@@ -133,13 +134,15 @@ class _BookingScreen extends State<BookingScreen> {
                                               SliverGridDelegateWithFixedCrossAxisCount(
                                                   crossAxisCount: 3),
                                           itemBuilder: ((context, index) {
+                                            List<int> options = List.filled(
+                                                TIME_SLOT.length, 1);
                                             if (snapshot.data != null) {
                                               for (var dati
                                                   in snapshot.data!.docs) {
                                                 DateTime start_dt =
                                                     dati["start"].toDate();
                                                 // print(dati["start"]);
-                                                // print(start_dt);
+                                                //print(start_dt);
 
                                                 DateTime finish_dt =
                                                     dati["finish"].toDate();
@@ -157,9 +160,11 @@ class _BookingScreen extends State<BookingScreen> {
                                                     DateFormat.Hm()
                                                         .format(finish_dt);
 
-                                                String actual_time =
+                                                /* String actual_time =
                                                     DateFormat.Hm()
-                                                        .format(DateTime.now());
+                                                        .format(DateTime.now()); */
+                                                // DateTime actual_time =
+                                                //     DateTime.now();
 
                                                 if ((start_dt.year ==
                                                             now.year &&
@@ -174,23 +179,67 @@ class _BookingScreen extends State<BookingScreen> {
                                                         (tempo_finish_book_db
                                                                 .compareTo(
                                                                     slot_fine) ==
-                                                            0)) ||
-                                                    ((actual_time.compareTo(
-                                                                slot_inizio) >
-                                                            0) &&
-                                                        (actual_time.compareTo(
-                                                                slot_fine) >
-                                                            0))) {
+                                                            0)) //||
+                                                    /* ((actual_time.compareTo(
+                                                                    now) >
+                                                                0) &&
+                                                            (actual_time
+                                                                    .compareTo(
+                                                                        now) <
+                                                                0))   ||*/
+                                                    /* ((start_dt.year ==
+                                                                now.year &&
+                                                            start_dt.month ==
+                                                                now.month &&
+                                                            start_dt.day ==
+                                                                now.day) &&
+                                                        ((actual_time.compareTo(
+                                                                    slot_inizio) <
+                                                                0) &&
+                                                            (actual_time.compareTo(
+                                                                    slot_fine) >
+                                                                0))) */
+                                                    ) {
                                                   options[index] = 0;
+                                                  //print();
                                                 } else {}
                                               }
                                               ;
                                             }
+                                            final tempi = TIME_SLOT
+                                                .elementAt(index)
+                                                .split('-');
+                                            var slot_inizio = tempi[0];
+                                            var slot_fine = tempi[1];
+                                            DateTime actual_time =
+                                                DateTime.now();
+                                            String actual_time_hm =
+                                                DateFormat.Hm()
+                                                    .format(actual_time);
+                                            if ((actual_time.year == now.year &&
+                                                    actual_time.month ==
+                                                        now.month &&
+                                                    actual_time.day ==
+                                                        now.day) &&
+                                                ((actual_time_hm.compareTo(
+                                                            slot_inizio) >
+                                                        0) &&
+                                                    (actual_time_hm.compareTo(
+                                                            slot_fine) >
+                                                        0))) {
+                                              options[index] = 0;
+                                            }
 
-                                            if (options[index] == 1) {
-                                              Available();
-                                            } else {
+                                            /* String actual_time =
+                                                    DateFormat.Hm()
+                                                        .format(DateTime.now()); */
+
+                                            if (options[index] == 0) {
                                               notAvailable();
+                                              //available = false;
+                                            } else {
+                                              //available = true;
+                                              Available();
                                             }
 
                                             return GestureDetector(
@@ -246,7 +295,7 @@ class _BookingScreen extends State<BookingScreen> {
                       SizedBox(
                         height: 10.0,
                       ),
-                      time && slot_time != null
+                      time && slot_time != Null
                           ? (ElevatedButton(
                               child: Text("BOOK ROOM"),
                               onPressed: () {
