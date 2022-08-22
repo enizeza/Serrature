@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:io';
+import 'dart:convert';
+import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -60,54 +63,81 @@ class _UserKeys extends State<UserKeys> {
     new Timer.periodic(Duration(seconds: 5), (Timer t) => setState(() {}));
   }
 
-  Socket? socket;
-  bool open = true;
-  bool available = true;
+  // Socket? socket;
+  // bool open = true;
+  // bool available = true;
 
-  void apri(pos) {
-    Socket? socket;
-    Socket.connect("192.168.2.99", 5000).then((Socket sock) {
-      socket = sock;
-      var start = 0x02;
-      var finish = 0x03;
-      var cmd = 0x31;
-      var message = Uint8List(5);
-      var bytedata = ByteData.view(message.buffer);
-      var len = start + finish + cmd + pos;
+  apri(pos) async {
+    Socket socket = await Socket.connect('192.168.2.99', 5000);
+    // Socket? socket;
+    // Socket.connect("192.168.2.99", 5000).then((Socket sock) {
+    //   socket = sock;
+    //   var start = 0x02;
+    //   var finish = 0x03;
+    //   var cmd = 0x31;
+    //   var message = Uint8List(5);
+    //   var bytedata = ByteData.view(message.buffer);
+    //   var len = start + finish + cmd + pos;
 
-      bytedata.setUint8(0, start);
-      bytedata.setUint8(1, pos);
-      bytedata.setUint8(2, cmd);
-      bytedata.setUint8(3, finish);
-      bytedata.setUint8(4, len.toInt());
+    //   bytedata.setUint8(0, start);
+    //   bytedata.setUint8(1, pos);
+    //   bytedata.setUint8(2, cmd);
+    //   bytedata.setUint8(3, finish);
+    //   bytedata.setUint8(4, len.toInt());
 
-      socket?.add(message);
-      socket?.listen(dataHandler,
-          onError: errorHandler, onDone: doneHandler, cancelOnError: false);
-      socket?.close();
-      socket?.destroy();
-      socket = null;
-    }).catchError((Object e) {
-      print("Unable to connect: $e");
-    });
-    //Connect standard in to the socket
-    stdin.listen(
-        (data) => socket?.write(new String.fromCharCodes(data).trim() + '\n'));
+    //   socket?.add(message);
+    //   // socket?.listen(dataHandler,
+    //   //     onError: errorHandler, onDone: doneHandler, cancelOnError: false);
+    //   // socket?.close();
+    //   // socket?.destroy();
+    //   // socket = null;
+    // });
+    // ).catchError((Object e) {
+    //   print("Unable to connect: $e");
+    // });
+    // //Connect standard in to the socket
+    // stdin.listen(
+    //     (data) => socket?.write(new String.fromCharCodes(data).trim() + '\n'));
+
+    // socket?.listen((List<int> event) {
+    //   print(utf8.decode(event));
+    // });
+
+    var start = 0x02;
+    var finish = 0x03;
+    var cmd = 0x31;
+    var message = Uint8List(5);
+    var bytedata = ByteData.view(message.buffer);
+    var len = start + finish + cmd + int.parse(pos);
+
+    bytedata.setUint8(0, start);
+    bytedata.setUint8(1, int.parse(pos));
+    bytedata.setUint8(2, cmd);
+    bytedata.setUint8(3, finish);
+    bytedata.setUint8(4, len.toInt());
+
+    socket.add(message);
+
+    // wait 5 seconds
+    //await Future.delayed(Duration(seconds: 5));
+
+    // .. and close the socket
+    socket.close();
   }
 
-  void dataHandler(data) {
-    print(new String.fromCharCodes(data).trim());
-  }
+  // void dataHandler(data) {
+  //   print(new String.fromCharCodes(data).trim());
+  // }
 
-  void errorHandler(error, StackTrace trace) {
-    print(error);
-  }
+  // void errorHandler(error, StackTrace trace) {
+  //   print(error);
+  // }
 
-  void doneHandler() {
-    socket?.close();
-    socket?.destroy();
-    socket = null;
-  }
+  // void doneHandler() {
+  //   socket?.close();
+  //   socket?.destroy();
+  //   socket = null;
+  // }
 
   @override
   Widget build(BuildContext context) {
