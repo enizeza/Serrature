@@ -39,12 +39,7 @@ class _AppBottomNavigationState extends State<AppBottomNavigation> {
       BottomBarItem(
         icon: Icons.logout,
         onPressed: () {
-          //SignOutButton();
           FirebaseAuth.instance.signOut();
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => ()),
-          // );
         },
       ),
       BottomBarItem(

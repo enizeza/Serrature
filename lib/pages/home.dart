@@ -47,13 +47,6 @@ class Home extends StatelessWidget {
                             itemBuilder: (BuildContext context, int index) {
                               Room room =
                                   Room.fromSnap(snapshot.data!.docs[index]);
-                              /* snapshot.data!.docs[index]["room_code"],
-                                  snapshot.data!.docs[index]["room_name"],
-                                  snapshot.data!.docs[index]["price_half_hour"],
-                                  snapshot.data!.docs[index]["image_id"],
-                                  snapshot.data!.docs[index]
-                                      ["room_description"],
-                                  snapshot.data!.docs[index]["room_number"]); */
                               return RoomCard(
                                 room: room,
                               );

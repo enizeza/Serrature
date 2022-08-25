@@ -1,32 +1,3 @@
-// import 'dart:ffi';
-
-// import 'package:serrature/models/room_model.dart';
-
-// class Booking {
-//   DateTime? start;
-//   DateTime? finish;
-//   var total;
-//   Room? room;
-//   var user_uid;
-
-//   Booking(this.start, this.finish, this.room, this.total, this.user_uid);
-
-//   Map<String, dynamic> toJson() => {
-//         "finish": finish,
-//         "start": start,
-//         "total": total,
-//         "room": room,
-//         "user_uid": user_uid,
-//       };
-
-//   Booking.fromSnapshot(snapshot)
-//       : finish = snapshot.data()["finish"].toDate(),
-//         start = snapshot.data()["start"].toDate(),
-//         total = snapshot.data()["total"],
-//         user_uid = snapshot.data()["user_uid"],
-//         room = snapshot.data()["room"];
-// }
-
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';

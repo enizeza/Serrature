@@ -1,7 +1,7 @@
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:serrature/booking_details.dart';
+import 'package:serrature/utils/booking_details.dart';
 import 'package:flutter/material.dart';
 import 'package:serrature/models/room_model.dart';
 import 'package:serrature/utils/time_slot.dart';
@@ -10,8 +10,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:serrature/utils/auth_gate.dart';
 import 'package:serrature/models/booking_model.dart';
-import 'package:serrature/utils/chiave.dart';
-import 'package:serrature/utils/connection.dart';
 
 class BookingScreen extends StatefulWidget {
   final Room room;
@@ -27,7 +25,6 @@ class _BookingScreen extends State<BookingScreen> {
   bool time = false;
   var slot_time;
   bool available = true;
-  //List<int> options = List.filled(TIME_SLOT.length, 1);
 
   void selected_date(DateTime data) {
     setState(() {
@@ -69,7 +66,6 @@ class _BookingScreen extends State<BookingScreen> {
           ) {
             if (snapshot.hasData) {
               final data = snapshot.data!.docs;
-              //List<int> options = List.filled(TIME_SLOT.length, 1);
               return SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 24.0),
@@ -141,8 +137,6 @@ class _BookingScreen extends State<BookingScreen> {
                                                   in snapshot.data!.docs) {
                                                 DateTime start_dt =
                                                     dati["start"].toDate();
-                                                // print(dati["start"]);
-                                                //print(start_dt);
 
                                                 DateTime finish_dt =
                                                     dati["finish"].toDate();
@@ -160,48 +154,20 @@ class _BookingScreen extends State<BookingScreen> {
                                                     DateFormat.Hm()
                                                         .format(finish_dt);
 
-                                                /* String actual_time =
-                                                    DateFormat.Hm()
-                                                        .format(DateTime.now()); */
-                                                // DateTime actual_time =
-                                                //     DateTime.now();
-
                                                 if ((start_dt.year ==
-                                                            now.year &&
-                                                        start_dt.month ==
-                                                            now.month &&
-                                                        start_dt.day ==
-                                                            now.day &&
-                                                        (tempo_start_book_db
-                                                                .compareTo(
-                                                                    slot_inizio) ==
-                                                            0) &&
-                                                        (tempo_finish_book_db
-                                                                .compareTo(
-                                                                    slot_fine) ==
-                                                            0)) //||
-                                                    /* ((actual_time.compareTo(
-                                                                    now) >
-                                                                0) &&
-                                                            (actual_time
-                                                                    .compareTo(
-                                                                        now) <
-                                                                0))   ||*/
-                                                    /* ((start_dt.year ==
-                                                                now.year &&
-                                                            start_dt.month ==
-                                                                now.month &&
-                                                            start_dt.day ==
-                                                                now.day) &&
-                                                        ((actual_time.compareTo(
-                                                                    slot_inizio) <
-                                                                0) &&
-                                                            (actual_time.compareTo(
-                                                                    slot_fine) >
-                                                                0))) */
-                                                    ) {
+                                                        now.year &&
+                                                    start_dt.month ==
+                                                        now.month &&
+                                                    start_dt.day == now.day &&
+                                                    (tempo_start_book_db
+                                                            .compareTo(
+                                                                slot_inizio) ==
+                                                        0) &&
+                                                    (tempo_finish_book_db
+                                                            .compareTo(
+                                                                slot_fine) ==
+                                                        0))) {
                                                   options[index] = 0;
-                                                  //print();
                                                 } else {}
                                               }
                                               ;
@@ -230,15 +196,9 @@ class _BookingScreen extends State<BookingScreen> {
                                               options[index] = 0;
                                             }
 
-                                            /* String actual_time =
-                                                    DateFormat.Hm()
-                                                        .format(DateTime.now()); */
-
                                             if (options[index] == 0) {
                                               notAvailable();
-                                              //available = false;
                                             } else {
-                                              //available = true;
                                               Available();
                                             }
 
@@ -300,11 +260,6 @@ class _BookingScreen extends State<BookingScreen> {
                               child: Text("BOOK ROOM"),
                               onPressed: () {
                                 Crea();
-                                //print(now.toString() + " + " + slot_time);
-                                // Booking booking = Booking(room_code: widget.room.room_code, room_name: widget.room.room_name, image_id: widget.room.image_id, price_half_hour: widget.room.price_half_hour, room_description: widget.room.room_description, room_number: widget.room.room_number, start: start, finish: finish, total: widget.room.price_half_hour, user_uid: uid)
-                                // FirebaseFirestore.instance
-                                //     .collection("booking")
-                                //     .add(booking.toJson());
                               },
                             ))
                           : (ElevatedButton(
@@ -318,7 +273,6 @@ class _BookingScreen extends State<BookingScreen> {
             }
             if (snapshot.hasError) {
               print(snapshot.error);
-              //! do any error handling here
             }
             return Center(
               child: CircularProgressIndicator(
@@ -341,8 +295,6 @@ class _BookingScreen extends State<BookingScreen> {
     final hour_fine = int.parse(hm_fine[0]);
     final minute_fine = int.parse(hm_fine[1]);
 
-    // String tempo_start_book_db = DateFormat.Hm().format(start_dt);
-    // String tempo_finish_book_db = DateFormat.Hm().format(finish_dt);
     DateTime new_start = new DateTime(
       now.year,
       now.month,

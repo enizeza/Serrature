@@ -16,8 +16,6 @@ class SingleRoomPage extends StatelessWidget {
         title: Text("Room detail"),
       ),
       body: Builder(builder: (BuildContext context) {
-        //double heightFromWhiteBg =
-        //  size.height - 200.0; // height for white section
         return Container(
           height: size.height,
           child: Stack(

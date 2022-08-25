@@ -52,12 +52,6 @@ class AuthGate extends StatelessWidget {
               ]);
         }
         return Home();
-        //return BookingUser();
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => BookingsUser()),
-        // );
-        //return SignOutButton();
       },
     );
   }

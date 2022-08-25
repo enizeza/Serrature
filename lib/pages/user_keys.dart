@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:typed_data';
 import 'dart:convert';
 import 'dart:async';
@@ -12,8 +11,7 @@ import 'package:serrature/models/command_model.dart';
 import 'package:serrature/models/room_model.dart';
 import 'package:serrature/utils/auth_gate.dart';
 import 'package:serrature/models/booking_model.dart';
-import 'package:serrature/utils/chiave.dart';
-import 'package:serrature/utils/connection.dart';
+
 
 class UserKeys extends StatefulWidget {
   @override
@@ -24,120 +22,11 @@ class _UserKeys extends State<UserKeys> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
   Timer? timer;
 
-  // void easy() {
-  //   setState(() {});
-  // }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   executeOnMinute(easy);
-  // }
-
-  // void executeOnMinute(void Function() callback) {
-  //   var now = DateTime.now();
-  //   var nextMinute =
-  //       DateTime(now.year, now.month, now.day, now.hour, now.minute + 1);
-  //   Timer(nextMinute.difference(now), () {
-  //     Timer.periodic(const Duration(minutes: 1), (timer) {
-  //       callback();
-  //     });
-
-  //     // Execute the callback on the first minute after the initial time.
-  //     //
-  //     // This should be done *after* registering the periodic [Timer] so that it
-  //     // is unaffected by how long [callback] takes to execute.
-  //     callback();
-  //   });
-  // }
-
-  // @override
-  // void dispose() {
-  //   timer?.cancel();
-  //   super.dispose();
-  // }
-
   @override
   void initState() {
     super.initState();
     new Timer.periodic(Duration(seconds: 5), (Timer t) => setState(() {}));
   }
-
-  // Socket? socket;
-  // bool open = true;
-  // bool available = true;
-
-  /* apri(pos) async {
-    Socket socket = await Socket.connect('192.168.2.99', 5000);
-    // Socket? socket;
-    // Socket.connect("192.168.2.99", 5000).then((Socket sock) {
-    //   socket = sock;
-    //   var start = 0x02;
-    //   var finish = 0x03;
-    //   var cmd = 0x31;
-    //   var message = Uint8List(5);
-    //   var bytedata = ByteData.view(message.buffer);
-    //   var len = start + finish + cmd + pos;
-
-    //   bytedata.setUint8(0, start);
-    //   bytedata.setUint8(1, pos);
-    //   bytedata.setUint8(2, cmd);
-    //   bytedata.setUint8(3, finish);
-    //   bytedata.setUint8(4, len.toInt());
-
-    //   socket?.add(message);
-    //   // socket?.listen(dataHandler,
-    //   //     onError: errorHandler, onDone: doneHandler, cancelOnError: false);
-    //   // socket?.close();
-    //   // socket?.destroy();
-    //   // socket = null;
-    // });
-    // ).catchError((Object e) {
-    //   print("Unable to connect: $e");
-    // });
-    // //Connect standard in to the socket
-    // stdin.listen(
-    //     (data) => socket?.write(new String.fromCharCodes(data).trim() + '\n'));
-
-    // socket?.listen((List<int> event) {
-    //   print(utf8.decode(event));
-    // });
-
-    var start = 0x02;
-    var finish = 0x03;
-    var cmd = 0x31;
-    var message = Uint8List(5);
-    var bytedata = ByteData.view(message.buffer);
-    var len = start + finish + cmd + int.parse(pos);
-
-    bytedata.setUint8(0, start);
-    bytedata.setUint8(1, int.parse(pos));
-    bytedata.setUint8(2, cmd);
-    bytedata.setUint8(3, finish);
-    bytedata.setUint8(4, len.toInt());
-
-    socket.add(message);
-
-    // wait 5 seconds
-    //await Future.delayed(Duration(seconds: 5));
-
-    // .. and close the socket
-    socket.close();
-  } */
-
-  // void dataHandler(data) {
-  //   print(new String.fromCharCodes(data).trim());
-  // }
-
-  // void errorHandler(error, StackTrace trace) {
-  //   print(error);
-  // }
-
-  // void doneHandler() {
-  //   socket?.close();
-  //   socket?.destroy();
-  //   socket = null;
-  // }
 
   void apri(String pos) {
     var start = 0x02;
@@ -152,30 +41,6 @@ class _UserKeys extends State<UserKeys> {
     bytedata.setUint8(2, cmd);
     bytedata.setUint8(3, finish);
     bytedata.setUint8(4, len.toInt());
-
-    /*Booking booking = Booking(
-        room_code: widget.room.room_code,
-        room_name: widget.room.room_name,
-        image_id: widget.room.image_id,
-        price_half_hour: widget.room.price_half_hour,
-        room_description: widget.room.room_description,
-        room_number: widget.room.room_number,
-        start: new_start,
-        finish: new_fine,
-        total: widget.room.price_half_hour,
-        user_uid: uid);
-    FirebaseFirestore.instance.collection("booking").add(booking.toJson());*/
-
-    /*Command command = Command(
-      cmd: "0x31",
-      done: false,
-      id: id,
-      len: "0x" + len.toString(),
-      pos: pos,
-      response: "",
-      user: uid,
-    );
-    FirebaseFirestore.instance.collection("command").add(command.toJson());*/
 
     String id = FirebaseFirestore.instance.collection('command').doc().id;
     try {
@@ -212,11 +77,6 @@ class _UserKeys extends State<UserKeys> {
         ),
         body: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
-                // .collection('users')
-                // .doc(uid)
-                //.collection('booking')
-                //.where("finish",
-                //  isGreaterThanOrEqualTo: Timestamp.fromDate(DateTime.now()))
                 .collection('booking')
                 .where("user_uid", isEqualTo: uid)
                 .snapshots(),
@@ -231,11 +91,10 @@ class _UserKeys extends State<UserKeys> {
                     itemBuilder: (context, index) {
                       var start = snapshot.data!.docs[index]['start'];
                       var finish = snapshot.data!.docs[index]['finish'];
-                      //var user_uid = snapshot.data!.docs[index]['user_uid'];
                       var ora = Timestamp.fromDate(DateTime.now());
                       Booking booking =
                           Booking.fromSnap(snapshot.data!.docs[index]);
-                      if ((start.compareTo(ora) <= 0) /*&& user_uid == uid*/ &&
+                      if ((start.compareTo(ora) <= 0) &&
                           (finish.compareTo(ora) > 0)) {
                         return Card(
                           child: Column(
@@ -245,42 +104,12 @@ class _UserKeys extends State<UserKeys> {
                                 leading: ElevatedButton.icon(
                                   icon: Icon(Icons.key_rounded),
                                   label: Text('Open'),
-                                  onPressed: () => {
-                                    apri(booking.room_code)
-                                    //  snapshot.data!.docs[index]['room_code'])
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) => Chiave(),
-                                    //   ),
-                                    // )
-                                    //Connection(0x03, 0x31).lancia(),
-                                  },
+                                  onPressed: () => {apri(booking.room_code)},
                                 ),
                                 title: Text("${booking.room_name}"),
-                                // title: Text(
-                                //     "${snapshot.data!.docs[index]['room_name']}"),
                                 subtitle:
                                     Text("Room Number ${booking.room_number}"),
                               ),
-                              // ListTile(
-                              //   title: Text(
-                              //       "Room Number ${snapshot.data!.docs[index]['room_number']}"),
-                              // ),
-                              //   ElevatedButton.icon(
-                              //     icon: Icon(Icons.key_rounded),
-                              //     label: Text('Open'),
-                              //     onPressed: () => {
-                              //       //apri(snapshot.data!.docs[index]['code_room'])
-                              //       // Navigator.push(
-                              //       //   context,
-                              //       //   MaterialPageRoute(
-                              //       //     builder: (context) => Chiave(),
-                              //       //   ),
-                              //       // )
-                              //       Connection(0x03, 0x31).lancia(),
-                              //     },
-                              // ),
                             ],
                           ),
                         );
