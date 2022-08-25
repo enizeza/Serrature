@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
 
@@ -9,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:serrature/models/command_model.dart';
 import 'package:serrature/models/room_model.dart';
 import 'package:serrature/utils/auth_gate.dart';
 import 'package:serrature/models/booking_model.dart';
@@ -67,7 +67,7 @@ class _UserKeys extends State<UserKeys> {
   // bool open = true;
   // bool available = true;
 
-  apri(pos) async {
+  /* apri(pos) async {
     Socket socket = await Socket.connect('192.168.2.99', 5000);
     // Socket? socket;
     // Socket.connect("192.168.2.99", 5000).then((Socket sock) {
@@ -123,7 +123,7 @@ class _UserKeys extends State<UserKeys> {
 
     // .. and close the socket
     socket.close();
-  }
+  } */
 
   // void dataHandler(data) {
   //   print(new String.fromCharCodes(data).trim());
@@ -138,6 +138,62 @@ class _UserKeys extends State<UserKeys> {
   //   socket?.destroy();
   //   socket = null;
   // }
+
+  void apri(String pos) {
+    var start = 0x02;
+    var finish = 0x03;
+    var cmd = 0x31;
+    var message = Uint8List(5);
+    var bytedata = ByteData.view(message.buffer);
+    var len = start + finish + cmd + int.parse(pos);
+
+    bytedata.setUint8(0, start);
+    bytedata.setUint8(1, int.parse(pos));
+    bytedata.setUint8(2, cmd);
+    bytedata.setUint8(3, finish);
+    bytedata.setUint8(4, len.toInt());
+
+    /*Booking booking = Booking(
+        room_code: widget.room.room_code,
+        room_name: widget.room.room_name,
+        image_id: widget.room.image_id,
+        price_half_hour: widget.room.price_half_hour,
+        room_description: widget.room.room_description,
+        room_number: widget.room.room_number,
+        start: new_start,
+        finish: new_fine,
+        total: widget.room.price_half_hour,
+        user_uid: uid);
+    FirebaseFirestore.instance.collection("booking").add(booking.toJson());*/
+
+    /*Command command = Command(
+      cmd: "0x31",
+      done: false,
+      id: id,
+      len: "0x" + len.toString(),
+      pos: pos,
+      response: "",
+      user: uid,
+    );
+    FirebaseFirestore.instance.collection("command").add(command.toJson());*/
+
+    String id = FirebaseFirestore.instance.collection('command').doc().id;
+    try {
+      Command command = Command(
+        cmd: "0x31",
+        done: false,
+        id: id,
+        len: len.toString(),
+        pos: pos,
+        response: "",
+        user: uid,
+      );
+      FirebaseFirestore.instance
+          .collection('command')
+          .doc(id)
+          .set(command.toJson());
+    } catch (e) {}
+  }
 
   @override
   Widget build(BuildContext context) {
