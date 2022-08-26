@@ -20,6 +20,13 @@ class Profile extends StatefulWidget {
 
 class _Profile extends State<Profile> {
   final uid = FirebaseAuth.instance.currentUser!.uid;
+  Timer? timer;
+
+  @override
+  void initState() {
+    super.initState();
+    new Timer.periodic(Duration(seconds: 5), (Timer t) => setState(() {}));
+  }
 
   void elimina(String id) {
     try {
@@ -33,6 +40,14 @@ class _Profile extends State<Profile> {
         backgroundColor: Colors.white70,
         appBar: AppBar(
           title: Text("Bookings Made"),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () {
+                setState(() {});
+              },
+            ),
+          ],
         ),
         body: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
