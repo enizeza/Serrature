@@ -191,7 +191,7 @@ class _BookingScreen extends State<BookingScreen> {
                                                             slot_inizio) >
                                                         0) &&
                                                     (actual_time_hm.compareTo(
-                                                            slot_fine) >
+                                                            slot_fine) >=
                                                         0))) {
                                               options[index] = 0;
                                             }

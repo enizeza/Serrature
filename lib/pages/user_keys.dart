@@ -7,11 +7,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:serrature/models/command_model.dart';
 import 'package:serrature/models/room_model.dart';
 import 'package:serrature/utils/auth_gate.dart';
 import 'package:serrature/models/booking_model.dart';
-
 
 class UserKeys extends StatefulWidget {
   @override
@@ -85,37 +85,38 @@ class _UserKeys extends State<UserKeys> {
               snapshot,
             ) {
               if (snapshot.hasData) {
+                List<Booking> keys = [];
+                for (int i = 0; i < snapshot.data!.docs.length; i++) {
+                  Booking booking = Booking.fromSnap(snapshot.data!.docs[i]);
+                  var start = snapshot.data!.docs[i]['start'];
+                  var finish = snapshot.data!.docs[i]['finish'];
+                  var ora = Timestamp.fromDate(DateTime.now());
+                  if ((start.compareTo(ora) <= 0) &&
+                      (finish.compareTo(ora) > 0)) {
+                    keys.add(booking);
+                  }
+                }
                 return Container(
                   child: ListView.builder(
-                    itemCount: snapshot.data!.docs.length,
+                    itemCount: keys.length,
                     itemBuilder: (context, index) {
-                      var start = snapshot.data!.docs[index]['start'];
-                      var finish = snapshot.data!.docs[index]['finish'];
-                      var ora = Timestamp.fromDate(DateTime.now());
-                      Booking booking =
-                          Booking.fromSnap(snapshot.data!.docs[index]);
-                      if ((start.compareTo(ora) <= 0) &&
-                          (finish.compareTo(ora) > 0)) {
-                        return Card(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              ListTile(
-                                leading: ElevatedButton.icon(
-                                  icon: Icon(Icons.key_rounded),
-                                  label: Text('Open'),
-                                  onPressed: () => {apri(booking.room_code)},
-                                ),
-                                title: Text("${booking.room_name}"),
-                                subtitle:
-                                    Text("Room Number ${booking.room_number}"),
+                      return Card(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            ListTile(
+                              leading: ElevatedButton.icon(
+                                icon: Icon(Icons.key_rounded),
+                                label: Text('Open'),
+                                onPressed: () => {apri(keys[index].room_code)},
                               ),
-                            ],
-                          ),
-                        );
-                      } else {
-                        return Text("");
-                      }
+                              title: Text("${keys[index].room_name}"),
+                              subtitle: Text(
+                                  "Room Number = ${keys[index].room_number} \nFinish Time = ${DateFormat('hh:mm').format(keys[index].finish)}"),
+                            ),
+                          ],
+                        ),
+                      );
                     },
                   ),
                 );
