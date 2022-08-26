@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:serrature/pages/profile.dart';
 import 'package:serrature/pages/user_keys.dart';
 import 'package:serrature/models/bottom_bar_item.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +31,10 @@ class _AppBottomNavigationState extends State<AppBottomNavigation> {
       BottomBarItem(
         icon: Icons.person,
         onPressed: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => ()),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => (Profile())),
+          );
         },
       ),
       BottomBarItem(

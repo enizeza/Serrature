@@ -311,13 +311,12 @@ class _BookingScreen extends State<BookingScreen> {
       minute_fine,
     );
 
-    print(new_fine.toString());
-
     var inizio = Timestamp.fromDate(new_start);
     var fine = Timestamp.fromDate(new_fine);
 
-    print(fine);
-    Booking booking = Booking(
+    String id = FirebaseFirestore.instance.collection('booking').doc().id;
+    try {
+      Booking booking = Booking(
         room_code: widget.room.room_code,
         room_name: widget.room.room_name,
         image_id: widget.room.image_id,
@@ -327,7 +326,18 @@ class _BookingScreen extends State<BookingScreen> {
         start: new_start,
         finish: new_fine,
         total: widget.room.price_half_hour,
-        user_uid: uid);
-    FirebaseFirestore.instance.collection("booking").add(booking.toJson());
+        user_uid: uid,
+        id: id,
+      );
+      FirebaseFirestore.instance
+          .collection('booking')
+          .doc(id)
+          .set(booking.toJson());
+    } catch (e) {}
+
+    setState(() {
+      time = false;
+      slot_time = null;
+    });
   }
 }

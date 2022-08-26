@@ -14,6 +14,7 @@ class Booking {
   final DateTime finish;
   final total;
   final String user_uid;
+  final String id;
 
   Booking({
     required this.room_code,
@@ -26,22 +27,25 @@ class Booking {
     required this.finish,
     required this.total,
     required this.user_uid,
+    required this.id,
   });
 
   static Booking fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     return Booking(
-        room_code: snapshot["room_code"],
-        room_name: snapshot["room_name"],
-        price_half_hour: snapshot["price_half_hour"],
-        image_id: snapshot["image_id"],
-        room_description: snapshot['room_description'],
-        start: snapshot['start'].toDate(),
-        finish: snapshot['finish'].toDate(),
-        total: snapshot['total'],
-        user_uid: snapshot['user_uid'],
-        room_number: snapshot['room_number']);
+      room_code: snapshot["room_code"],
+      room_name: snapshot["room_name"],
+      price_half_hour: snapshot["price_half_hour"],
+      image_id: snapshot["image_id"],
+      room_description: snapshot['room_description'],
+      start: snapshot['start'].toDate(),
+      finish: snapshot['finish'].toDate(),
+      total: snapshot['total'],
+      user_uid: snapshot['user_uid'],
+      room_number: snapshot['room_number'],
+      id: snapshot["id"],
+    );
   }
 
   Map<String, dynamic> toJson() => {
@@ -55,6 +59,7 @@ class Booking {
         'finish': finish,
         'total': total,
         'user_uid': user_uid,
+        'id': id,
       };
 
   factory Booking.fromJson(Map<String, dynamic> json) => Booking(
@@ -68,6 +73,7 @@ class Booking {
         finish: json['finish'] as DateTime,
         total: json['total'] as double,
         user_uid: json['user_uid'] as String,
+        id: json['id'] as String,
       );
 
   Crea(Booking booking) {
